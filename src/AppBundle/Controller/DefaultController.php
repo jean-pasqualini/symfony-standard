@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Exception\CustomException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,7 +30,7 @@ class DefaultController extends Controller
 
         $response->setPublic();
 
-        $response->setSharedMaxAge(86400);
+        $response->setSharedMaxAge(0);
 
         return $this->render('AppBundle::casA.html.twig', array(), $response);
     }
@@ -58,12 +59,19 @@ class DefaultController extends Controller
 
         $response->setContent('block A dynamique, uniqid() = '.uniqid());
 
+        throw new CustomException('ok');
+
         return $response;
     }
 
     public function blockBAction()
     {
         $response = new Response();
+
+
+        $response->setPublic();
+
+        $response->setSharedMaxAge(0);
 
         $response->setContent('block B dynamique, uniqid() = '.uniqid());
 

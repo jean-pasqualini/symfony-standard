@@ -1,6 +1,6 @@
 <h1>Cas B</h1>
 
 <h3> block A </h3>
-{{ render_esi(controller('AppBundle:Default:blockA')) }}
+{{ render(controller('AppBundle:Default:blockA'), { ignore_errors: false }) }}
 <h3> Block B </h3>
-{{ render_esi(controller('AppBundle:Default:blockB')) }}
+{{ render(controller('AppBundle:Default:blockB'), { ignore_errors: false }) }}

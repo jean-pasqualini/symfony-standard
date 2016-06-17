@@ -35,20 +35,6 @@ class DefaultController extends Controller
         return $this->render('AppBundle::casA.html.twig', array(), $response);
     }
 
-    /**
-     * @Route("/casB", name="casB")
-     */
-    public function casBAction(Request $request)
-    {
-        $response = new Response();
-
-        $response->setPublic();
-
-        $response->setSharedMaxAge(86400);
-
-        return $this->render('AppBundle::casB.html.twig', array(), $response);
-    }
-
     public function blockAAction()
     {
         $response = new Response();
@@ -67,7 +53,6 @@ class DefaultController extends Controller
     public function blockBAction()
     {
         $response = new Response();
-
 
         $response->setPublic();
 

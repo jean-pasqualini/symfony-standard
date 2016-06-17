@@ -8,13 +8,16 @@
 
 namespace AppBundle\EventListener;
 
+use AppBundle\Exception\CustomException;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
+use Symfony\Component\HttpKernel\KernelEvents;
 
 
 /**
@@ -24,29 +27,25 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
  * @copyright 2016 DigitasLbi France
  * @package AppBundle\EventListener;
  */
-class ExceptionListener
+class ExceptionListener implements EventSubscriberInterface
 {
-    protected $dispatcher;
-
-    protected $responseListener;
-
-    public function __construct(EventDispatcher $dispatcher, ResponseListener $responseListener)
+    /**
+     * {@inheritdoc}
+     */
+    public static function getSubscribedEvents()
     {
-        $this->dispatcher = $dispatcher;
-
-        $this->responseListener = $responseListener;
+        return array(
+            KernelEvents::EXCEPTION => array('onKernelException', 255),
+        );
     }
 
     public function onKernelException(GetResponseForExceptionEvent $event)
     {
-
-        if($event->getRequestType() == HttpKernelInterface::MASTER_REQUEST) {
-            $this->responseListener->setRedirect( new RedirectResponse('http://google.fr/'));
-            $this->dispatcher->dispatch('raaah', new Event());
-            $response = new RedirectResponse('http://google.fr/');
-            $event->setResponse($response);
-            $event->stopPropagation();
+        if($event->getException() instanceof \Twig_Error_Runtime)
+        {
+            if ($event->getException()->getPrevious() instanceof CustomException) {
+                $event->setResponse(new RedirectResponse('http://google.fr/'));
+            }
         }
-
     }
 }

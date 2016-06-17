@@ -1,14 +1,6 @@
-parameters:
-    fragment.listener.class: AppBundle\EventListener\FragmentListener
-
 services:
-#    app_bundle.exception_listener:
-#        class: AppBundle\EventListener\ExceptionListener
-#        arguments: [@event_dispatcher, @app_bundle.response_listener]
-#        tags:
-#            - { name: kernel.event_listener, event: kernel.exception, method: onKernelException }
-#
-#    app_bundle.response_listener:
-#        class: AppBundle\EventListener\ResponseListener
-#        tags:
-#            - { name: kernel.event_listener, event: kernel.response, method: onResponse }
+    app_bundle.exception_listener:
+        class: AppBundle\EventListener\ExceptionListener
+        arguments: []
+        tags:
+            - { name: kernel.event_subscriber }

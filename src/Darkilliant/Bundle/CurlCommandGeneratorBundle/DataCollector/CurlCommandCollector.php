@@ -19,9 +19,8 @@
 namespace Darkilliant\Bundle\CurlCommandGeneratorBundle\DataCollector;
 
 use Buzz\Browser;
-use Buzz\Client\ClientInterface;
+use Darkilliant\Bundle\CurlCommandGeneratorBundle\Logger\CurlCommandLogger;
 use Darkilliant\CurlCommandGenerator\Definition\Factory\BuzzDefinitionFactory;
-use Darkilliant\CurlCommandGenerator\Definition\Factory\CurlDefinitionFactory;
 use Darkilliant\CurlCommandGenerator\Generator\CommandGenerator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -44,18 +43,26 @@ class CurlCommandCollector extends DataCollector
 
     protected $curlCommandGenerator;
 
-    public function __construct(Browser $browser, BuzzDefinitionFactory $curlDefinitionFactory, CommandGenerator $commandGenerator)
+    protected $commandLogger;
+
+    public function __construct(Browser $browser, BuzzDefinitionFactory $curlDefinitionFactory, CommandGenerator $commandGenerator, CurlCommandLogger $commandLogger)
     {
         $this->client = $browser->getClient();
 
         $this->curlDefintionFactory = $curlDefinitionFactory;
 
         $this->curlCommandGenerator = $commandGenerator;
+
+        $this->commandLogger = $commandLogger;
     }
 
     public function addRequest(BuzzRequest $request)
     {
-        $this->defintionCollection[] = $this->curlDefintionFactory->factory($this->client, $request);
+        $definition = $this->curlDefintionFactory->factory($this->client, $request);
+
+        $this->defintionCollection[] = $definition;
+
+        $this->commandLogger->logRequestDefintion($definition);
     }
 
     public function getCommandCollection()

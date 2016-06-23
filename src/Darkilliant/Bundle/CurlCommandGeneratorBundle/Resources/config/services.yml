@@ -10,6 +10,7 @@ services:
             - @buzz
             - @darkilliant.curl_command_generator.defintion_factory.buzz
             - @darkilliant.curl_command_generator.generator.command_generator
+            - @darkilliant.curl_command_generator.logger.request_logger
         public: true
         tags:
             -
@@ -22,3 +23,9 @@ services:
 
     darkilliant.curl_command_generator.generator.command_generator:
         class: Darkilliant\CurlCommandGenerator\Generator\CommandGenerator
+
+    darkilliant.curl_command_generator.logger.request_logger:
+        class: Darkilliant\Bundle\CurlCommandGeneratorBundle\Logger\CurlCommandLogger
+        arguments: [@darkilliant.curl_command_generator.generator.command_generator]
+        calls:
+            - [setLogger, [@logger]]

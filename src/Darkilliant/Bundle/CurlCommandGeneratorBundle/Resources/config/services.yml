@@ -1,10 +1,24 @@
 services:
+    darkilliant.curl_command_generator.adapter.buzz.buzz_request_litener:
+        class: Darkilliant\Bundle\CurlCommandGeneratorBundle\Adapter\Buzz\BuzzRequestListener
+        arguments: [@service_container]
+        tags:
+            - { name: buzz.listener }
     darkilliant.curl_command_generator.curl_command_collector:
         class: Darkilliant\Bundle\CurlCommandGeneratorBundle\DataCollector\CurlCommandCollector
-        public: false
+        arguments:
+            - @buzz
+            - @darkilliant.curl_command_generator.defintion_factory.buzz
+            - @darkilliant.curl_command_generator.generator.command_generator
+        public: true
         tags:
             -
                 name: data_collector
                 template: 'DarkilliantCurlCommandGeneratorBundle:data_collector:collector.html.twig'
                 id: 'darkilliant.curl_command_collector'
 
+    darkilliant.curl_command_generator.defintion_factory.buzz:
+        class: Darkilliant\CurlCommandGenerator\Definition\Factory\BuzzDefinitionFactory
+
+    darkilliant.curl_command_generator.generator.command_generator:
+        class: Darkilliant\CurlCommandGenerator\Generator\CommandGenerator

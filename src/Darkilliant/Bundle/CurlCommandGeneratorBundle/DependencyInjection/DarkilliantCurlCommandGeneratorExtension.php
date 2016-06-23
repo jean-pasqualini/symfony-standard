@@ -18,6 +18,7 @@
 
 namespace Darkilliant\Bundle\CurlCommandGeneratorBundle\DependencyInjection;
 
+use Darkilliant\Bundle\CurlCommandGeneratorBundle\DependencyInjection\Compiler\BuzzCompiler;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
@@ -37,4 +38,6 @@ class DarkilliantCurlCommandGeneratorExtension extends Extension
 
         $loader->load('services.yml');
     }
+
+
 }

@@ -18,10 +18,15 @@
 
 namespace Darkilliant\Bundle\CurlCommandGeneratorBundle\DataCollector;
 
+use Buzz\Browser;
+use Buzz\Client\ClientInterface;
+use Darkilliant\CurlCommandGenerator\Definition\Factory\BuzzDefinitionFactory;
+use Darkilliant\CurlCommandGenerator\Definition\Factory\CurlDefinitionFactory;
+use Darkilliant\CurlCommandGenerator\Generator\CommandGenerator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
-
+use Buzz\Message\Request as BuzzRequest;
 
 /**
  * CurlCommandCollector
@@ -31,9 +36,45 @@ use Symfony\Component\HttpKernel\DataCollector\DataCollector;
  */
 class CurlCommandCollector extends DataCollector
 {
+    protected $client;
+
+    protected $defintionCollection = array();
+
+    protected $curlDefintionFactory;
+
+    protected $curlCommandGenerator;
+
+    public function __construct(Browser $browser, BuzzDefinitionFactory $curlDefinitionFactory, CommandGenerator $commandGenerator)
+    {
+        $this->client = $browser->getClient();
+
+        $this->curlDefintionFactory = $curlDefinitionFactory;
+
+        $this->curlCommandGenerator = $commandGenerator;
+    }
+
+    public function addRequest(BuzzRequest $request)
+    {
+        $this->defintionCollection[] = $this->curlDefintionFactory->factory($this->client, $request);
+    }
+
+    public function getCommandCollection()
+    {
+        return $this->data['commandCollection'];
+    }
+
     public function collect(Request $request, Response $response, \Exception $exception = null)
     {
         $this->data = array();
+
+        $curlCommandCollection = array();
+
+        foreach($this->defintionCollection as $definition)
+        {
+            $curlCommandCollection[] = $this->curlCommandGenerator->generateCommand($definition);
+        }
+
+        $this->data['commandCollection'] = $curlCommandCollection;
     }
 
     public function getName()

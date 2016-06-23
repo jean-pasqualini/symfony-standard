@@ -31,10 +31,17 @@
 
 {% block panel %}
     {# Optional, for showing the most details. #}
-    <h2>Acceptable Content Types</h2>
+    <h2>Requêtes exécutée</h2>
     <table>
         <tr>
-            <th>Content Type</th>
+            <th>Commande curl</th>
         </tr>
+
+        {% for command in collector.commandCollection %}
+            <tr>
+                <td>{{ command }}</td>
+            </tr>
+        {% endfor %}
     </table>
+
 {% endblock %}

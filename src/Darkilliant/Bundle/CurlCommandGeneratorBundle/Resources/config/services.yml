@@ -1,0 +1,10 @@
+services:
+    darkilliant.curl_command_generator.curl_command_collector:
+        class: Darkilliant\Bundle\CurlCommandGeneratorBundle\DataCollector\CurlCommandCollector
+        public: false
+        tags:
+            -
+                name: data_collector
+                template: 'DarkilliantCurlCommandGeneratorBundle:data_collector:collector.html.twig'
+                id: 'darkilliant.curl_command_collector'
+

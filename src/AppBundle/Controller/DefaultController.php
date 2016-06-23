@@ -56,7 +56,7 @@ class DefaultController extends Controller
 
         $response->setSharedMaxAge(0);
 
-        $response->setContent('block A dynamique, uniqid() = '.uniqid());
+        $response->setContent('block A dynamic, uniqid() = '.uniqid());
 
         return $response;
     }
@@ -65,7 +65,7 @@ class DefaultController extends Controller
     {
         $response = new Response();
 
-        $response->setContent('block B dynamique, uniqid() = '.uniqid());
+        $response->setContent('block B dynamic, uniqid() = '.uniqid());
 
         return $response;
     }

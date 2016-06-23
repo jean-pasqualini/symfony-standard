@@ -1,4 +1,14 @@
-<h1>Cas B</h1>
+<h1>Case A</h1>
+
+<p>
+    In the case of a page <br /><br />
+
+    Page (s-max-age: 86400) <br />
+    block B (s-max-age: 0) <br />
+    block A (s-max-age: null) <br />
+    <br /><br />
+    The s-max-age injected by symfony in the response is 0.
+</p>
 
 <h3> block A </h3>
 {{ render_esi(controller('AppBundle:Default:blockA')) }}
